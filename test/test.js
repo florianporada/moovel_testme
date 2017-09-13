@@ -1,5 +1,3 @@
-'use strict';
-
 const chai = require('chai');
 const mocha = require('mocha');
 const server = require('../server/index');
