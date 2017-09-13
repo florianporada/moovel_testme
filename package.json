@@ -1,0 +1,34 @@
+{
+  "name": "moovel_testme",
+  "version": "0.0.1",
+  "description": "task implementation for the moovel dev team.",
+  "main": "server/index.js",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "mocha": "^3.5.0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/florianporada/moovel_testme.git"
+  },
+  "keywords": [
+    "test",
+    "me",
+    "moovel"
+  ],
+  "author": "florian porada <florian.porada@gmail.com> (“http://everydayweekend.net/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/florianporada/moovel_testme/issues"
+  },
+  "homepage": "https://github.com/florianporada/moovel_testme#readme",
+  "dependencies": {
+    "winston": "^2.3.1"
+  }
+}
