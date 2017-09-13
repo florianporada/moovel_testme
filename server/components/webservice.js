@@ -12,7 +12,7 @@ const Webservice = function Webservice() {
 };
 
 Webservice.prototype.start = function start() {
-  app.use(bodyParser.urlencoded({ extended: true }));
+  // app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
   app.use('/', www);

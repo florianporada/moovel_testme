@@ -6,11 +6,11 @@ const router = express.Router();
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
-  winston.log('Time: ', Date.now());
+  winston.log('info', '%s %s %s', req.method, req.url, req.path);
   next();
 });
 
-// get react files
+// get client files
 router.use(express.static(path.join(__dirname, '..', '..', '..', '/public')));
 
 module.exports = router;

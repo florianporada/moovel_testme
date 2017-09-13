@@ -1,5 +1,6 @@
 const express = require('express');
 const winston = require('winston');
+const request = require('request');
 
 const router = express.Router();
 
@@ -9,13 +10,34 @@ router.use((req, res, next) => {
   next();
 });
 
+// entrypoint for the api
 router.get('/', (req, res) => {
-  res.send({ msg: 'welcome to the wonderland' });
+  res.send({
+    welcome: 'welcome to the wonderland',
+    usage: [
+      { '/': 'entrypoint' },
+      { '/github/users/': 'GET. gives you back members from moovel org' },
+    ],
+  });
 });
 
 // get users from github api
 router.get('/github/users/', (req, res) => {
-  res.send({ users: ['here', 'could', 'be', 'a', 'user'] });
+  const options = {
+    url: 'https://api.github.com/orgs/moovel/members',
+    headers: {
+      'User-Agent': 'request',
+    },
+  };
+
+  request(options, (err, response, body) => {
+    if (err) {
+      winston.log('error', 'error while getting github users', err);
+    }
+
+    res.set('Content-Type', 'application/json');
+    res.send(body);
+  });
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 {
   "name": "moovel_testme",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "task implementation for the moovel dev team.",
   "main": "server/index.js",
   "devDependencies": {
@@ -32,6 +32,7 @@
   "dependencies": {
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
+    "request": "^2.81.0",
     "winston": "^2.3.1"
   }
 }
