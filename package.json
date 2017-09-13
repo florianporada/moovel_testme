@@ -11,6 +11,7 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
+    "start": "node server/index.js",
     "test": "mocha --reporter spec"
   },
   "repository": {
@@ -29,6 +30,8 @@
   },
   "homepage": "https://github.com/florianporada/moovel_testme#readme",
   "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
     "winston": "^2.3.1"
   }
 }
