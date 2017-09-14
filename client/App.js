@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem } from 'react-native-elements'
+import  { ListItem } from 'react-native-elements'
 import { ActivityIndicator, StyleSheet, Text, View, ListView } from 'react-native';
+import { logger } from 'react-native-logger'
+import setting from './config/settings';
 
 class ListRow extends React.Component {
   render() {
@@ -43,7 +45,7 @@ export default class App extends React.Component {
     )
   }
   _getGithubUsers() {
-    return fetch('http://192.168.178.117:8080/api/github/users')
+    return fetch(`${setting.API_ENDPOINT}github/users`)
       .then((response) => response.json())
       .then((responseJson) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -55,7 +57,7 @@ export default class App extends React.Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        logger.log('error', error);
       });
   }
 
@@ -88,10 +90,5 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    paddingTop: 22
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
+  }
 });
