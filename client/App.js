@@ -1,13 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { List, ListItem } from 'react-native-elements'
 import { ActivityIndicator, StyleSheet, Text, View, ListView } from 'react-native';
 
-class ListItem extends React.Component {
+class ListRow extends React.Component {
   render() {
     return (
       <Text>{this.props.name}</Text>
     );
   }
 }
+
+ListRow.propTypes = {
+  name: PropTypes.string
+};
 
 export default class App extends React.Component {
   constructor() {
@@ -17,7 +23,26 @@ export default class App extends React.Component {
     }
   }
 
-  componentDidMount() {
+  _renderLoadingView() {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
+
+  _renderRow (rowData) {
+    return (
+      <ListItem
+        roundAvatar
+        hideChevron
+        title={rowData.login}
+        subtitle={rowData.id}
+        avatar={{uri:rowData.avatar_url}}
+      />
+    )
+  }
+  _getGithubUsers() {
     return fetch('http://192.168.178.117:8080/api/github/users')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -25,7 +50,7 @@ export default class App extends React.Component {
         this.setState({
           isLoading: false,
           dataSource: ds.cloneWithRows(responseJson),
-        }, function() {
+        }, () => {
           // do something with new state
         });
       })
@@ -34,10 +59,14 @@ export default class App extends React.Component {
       });
   }
 
+  componentDidMount() {
+    this._getGithubUsers();
+  }
+
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={{flex: 1, paddingTop: 20}}>
+        <View style={styles.container}>
           <ActivityIndicator />
         </View>
       );
@@ -47,7 +76,8 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <ListItem name={rowData.login} />}
+          renderRow={this._renderRow}
+          // renderRow={(rowData) => <ListRow name={rowData.login} />}
         />
       </View>
     );

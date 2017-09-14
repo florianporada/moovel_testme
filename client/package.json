@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^8.0.0",
@@ -24,7 +24,9 @@
   },
   "dependencies": {
     "expo": "^20.0.0",
+    "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
-    "react-native": "^0.47.0"
+    "react-native": "^0.47.0",
+    "react-native-elements": "^0.16.0"
   }
 }
