@@ -1,5 +1,5 @@
 # Define node version
-FROM node:argon
+FROM node:alpine
 
 # Create app directory
 RUN mkdir -p /usr/src/app
