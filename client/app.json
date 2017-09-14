@@ -1,4 +1,6 @@
 {
+  "name": "moovel_testme",
+  "displayName": "movel team",
   "expo": {
     "sdkVersion": "20.0.0"
   }
