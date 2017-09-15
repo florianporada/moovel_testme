@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, Linking, TouchableOpacity } from 'react-native';
-import { Badge, Button, Avatar, Icon } from 'react-native-elements'
+import { Text, View, Linking } from 'react-native';
+import { Badge, Avatar, Icon } from 'react-native-elements'
 import { logger } from 'react-native-logger';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
@@ -30,14 +30,19 @@ class ProfileCard extends React.Component {
             activeOpacity={0.7}
           />
           <Badge
-            value={30}
+            value={modalContent.followers}
             textStyle={styles.badgeText}
             containerStyle={styles.badgeContainer}
           />
         </View>
-        <Text>Hello {modalContent.login}! </Text>
+        <View style={styles.profileCardInfo}>
+          <Text><Text style={styles.bold}>Username: </Text>{modalContent.login}</Text>
+          <Text><Text style={styles.bold}>Name: </Text>{modalContent.name}</Text>
+          <Text><Text style={styles.bold}>Joined: </Text>{modalContent.created_at}</Text>
+          <Text><Text style={styles.bold}>Bio: </Text>{modalContent.bio}</Text>
+        </View>
       </View>
-      <View style={styles.profileCardGeneric}>
+      <View style={[styles.profileCardGeneric, styles.profileCardIconWrap]}>
         <Icon
           raised
           name='send'
@@ -57,21 +62,16 @@ class ProfileCard extends React.Component {
           name='globe'
           type='font-awesome'
           color={colors.primary1}
-          onPress={() => { Linking.openURL('mailto:somethingemail@gmail.com&subject=abcdefg&body=body');}}
+          onPress={() => { Linking.openURL(modal.blog);}}
         />
       </View>
       <View style={styles.flexZero}>
-        <TouchableOpacity
-          onPress={() => actions.hideModal()}>
-          <Text style={{ textAlign: 'center' }} >Close modal</Text>
-        </TouchableOpacity>
-
-        {/*<Button
-          icon={{name: 'squirrel', type: 'octicon' }}
-          onPress={() => {
-            actions.hideModal();
-          }}
-          />*/}
+        <Icon
+          name='times'
+          type='font-awesome'
+          color={colors.primary1}
+          onPress={() => actions.hideModal()}
+        />
       </View>
      </View>
     );

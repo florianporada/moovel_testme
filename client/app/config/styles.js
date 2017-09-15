@@ -22,6 +22,9 @@ const styles = {
   flexZero: {
     flex: 0
   },
+  bold: {
+    fontWeight: 'bold'
+  },
   loadingView: {
     flex: 1,
     justifyContent: 'center',
@@ -47,8 +50,13 @@ const styles = {
   profileCardGeneric: {
     flex: 0,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingBottom: 15
+  },
+  profileCardIconWrap: {
+    justifyContent: 'space-between',
+  },
+  profileCardInfo: {
+    paddingLeft: 30,
   }
 }
 

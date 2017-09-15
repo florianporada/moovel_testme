@@ -80,7 +80,7 @@ class TheApp extends React.Component {
         />
         <Modal
           open={this.props.modalVisible}
-          modalDidOpen={() => console.log('modal did open')}
+          modalDidOpen={() => logger.log('modal did open')}
           modalDidClose={() => this.props.actions.hideModal()}>
             <ProfileCard style={{}}/>
           </Modal>
