@@ -5,7 +5,7 @@ const config = require('../../config');
 const getUserInfo = function getUserInfo(user) {
   return new Promise((resolve, reject) => {
     if (!user.login) {
-      reject(new Error('no username provided'));
+      reject(new Error('no username provided. { login: "foo"} is missing'));
     }
 
     const options = {
@@ -27,6 +27,11 @@ const getUserInfo = function getUserInfo(user) {
   });
 };
 
+const isExceeded = function isExceeded(message) {
+  return message.contains('API rate limit exceeded');
+};
+
 module.exports = {
   getUserInfo,
+  isExceeded,
 };

@@ -35,7 +35,8 @@ router.get('/github/rate_limit/', (req, res) => {
 
   request(options, (err, response, body) => {
     if (err) {
-      winston.log('error', 'error while getting github users', err);
+      winston.log('error', 'Error while fetching rate limits', err);
+      res.status(500).send('Error while fetching rate limits');
     }
 
     res.set('Content-Type', 'application/json');
@@ -54,7 +55,8 @@ router.get('/github/users/moovel/', (req, res) => {
 
   request(options, (err, response, body) => {
     if (err) {
-      winston.log('error', 'error while getting github users', err);
+      winston.log('error', 'Error while fetching moovel members', err);
+      res.status(500).send('Error while fetching moovel members');
     }
 
     res.set('Content-Type', 'application/json');
@@ -72,9 +74,10 @@ router.get('/github/users/java/', (req, res) => {
     },
   };
 
-  request(options, (err, response, body) => {
-    if (err) {
-      winston.log('error', 'error while getting github users', err);
+  request(options, (err0, response, body) => {
+    if (err0) {
+      winston.log('error', 'Error while fetching the java developers', err0);
+      res.status(500).send('Error while fetching the java developers');
     }
 
     const parsedBody = JSON.parse(body);
@@ -85,11 +88,12 @@ router.get('/github/users/java/', (req, res) => {
       promiseArray.push(getUserInfo(items[i]));
     }
 
-    winston.log('info', promiseArray);
-
     Promise.all(promiseArray).then((responseArray) => {
       res.set('Content-Type', 'application/json');
       res.send(responseArray);
+    }, (err1) => {
+      winston.log('error', 'Error while fetching the user details', err1);
+      res.status(500).send('Error while fetching the user details');
     });
   });
 });
