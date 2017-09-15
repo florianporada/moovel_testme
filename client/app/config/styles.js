@@ -43,9 +43,16 @@ const styles = {
   },
   badgeContainer: {
     backgroundColor: colors.primary1,
+    marginTop: -10,
+  },
+  bagdeWrap: {
     position: 'absolute',
-    left: 55,
-    top: -70
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   profileCardGeneric: {
     flex: 0,
@@ -56,7 +63,8 @@ const styles = {
     justifyContent: 'space-between',
   },
   profileCardInfo: {
-    paddingLeft: 30,
+    flex: 1,
+    paddingLeft: 10,
   }
 }
 
