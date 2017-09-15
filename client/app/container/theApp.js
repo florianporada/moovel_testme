@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actions from '../actions/actions';
-import ApiService from '../api/';
+import * as actions from '../actions';
+import ApiService from '../api';
 import ProfileCard from '../components/ProfileCard'
 import { colors, styles } from '../config/styles'
 
@@ -38,7 +38,8 @@ class TheApp extends React.Component {
         roundAvatar
         hideChevron
         onPress={() => { this._onPress(rowData) }}
-        title={rowData.login}
+        title={rowData.name}
+        subtitle={rowData.login}
         avatar={{uri:rowData.avatar_url}}
       />
     );

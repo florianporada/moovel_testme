@@ -23,6 +23,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "dateformat": "^2.0.0",
     "expo": "^20.0.0",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",

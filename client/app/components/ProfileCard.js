@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View, Linking } from 'react-native';
-import { Badge, Avatar, Icon } from 'react-native-elements'
-import { logger } from 'react-native-logger';
+import { Badge, Avatar, Icon } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
-import * as actions from '../actions/actions';
+import helper from '../helper';
+import * as actions from '../actions';
 import { styles, colors } from '../config/styles';
 
 class ProfileCard extends React.Component {
@@ -16,8 +16,6 @@ class ProfileCard extends React.Component {
 
   render() {
     const { actions, modalContent } = this.props;
-
-    logger.log(modalContent);
 
     return (
       <View style={styles.flexZero}>
@@ -29,16 +27,18 @@ class ProfileCard extends React.Component {
             source={{uri: modalContent.avatar_url}}
             activeOpacity={0.7}
           />
-          <Badge
-            value={modalContent.followers}
-            textStyle={styles.badgeText}
-            containerStyle={styles.badgeContainer}
-          />
+          <View style={styles.badgeWrap}>
+            <Badge
+              value={modalContent.followers}
+              textStyle={styles.badgeText}
+              containerStyle={styles.badgeContainer}
+            />
+          </View>
         </View>
         <View style={styles.profileCardInfo}>
           <Text><Text style={styles.bold}>Username: </Text>{modalContent.login}</Text>
           <Text><Text style={styles.bold}>Name: </Text>{modalContent.name}</Text>
-          <Text><Text style={styles.bold}>Joined: </Text>{modalContent.created_at}</Text>
+          <Text><Text style={styles.bold}>Joined: </Text>{helper.formatDate(modalContent.created_at)}</Text>
           <Text><Text style={styles.bold}>Bio: </Text>{modalContent.bio}</Text>
         </View>
       </View>
