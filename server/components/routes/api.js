@@ -3,7 +3,8 @@ const winston = require('winston');
 const request = require('request');
 
 const router = express.Router();
-const githubApi = 'https://api.github.com';
+const config = require('../../config');
+const { getUserInfo } = require('../helper');
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -26,7 +27,7 @@ router.get('/', (req, res) => {
 // get rate limit infos from github api
 router.get('/github/rate_limit/', (req, res) => {
   const options = {
-    url: `${githubApi}/rate_limit`,
+    url: `${config.GITHUB_API}/rate_limit`,
     headers: {
       'User-Agent': 'request',
     },
@@ -45,7 +46,7 @@ router.get('/github/rate_limit/', (req, res) => {
 // get moovel memebers from github api
 router.get('/github/users/moovel/', (req, res) => {
   const options = {
-    url: `${githubApi}/orgs/moovel/members`,
+    url: `${config.GITHUB_API}/orgs/moovel/members`,
     headers: {
       'User-Agent': 'request',
     },
@@ -65,7 +66,7 @@ router.get('/github/users/moovel/', (req, res) => {
 router.get('/github/users/java/', (req, res) => {
   const limit = (req.query.limit) ? req.query.limit : 10;
   const options = {
-    url: `${githubApi}/search/users?q=language%3Ajavascript&type=Users&sort=login&order=asc`,
+    url: `${config.GITHUB_API}/search/users?q=language%3Ajavascript&type=Users&sort=login&order=asc`,
     headers: {
       'User-Agent': 'request',
     },
@@ -78,9 +79,18 @@ router.get('/github/users/java/', (req, res) => {
 
     const parsedBody = JSON.parse(body);
     const items = parsedBody.items.slice(0, limit);
+    const promiseArray = [];
 
-    res.set('Content-Type', 'application/json');
-    res.send(items);
+    for (let i = 0; i < items.length; i += 1) {
+      promiseArray.push(getUserInfo(items[i]));
+    }
+
+    winston.log('info', promiseArray);
+
+    Promise.all(promiseArray).then((responseArray) => {
+      res.set('Content-Type', 'application/json');
+      res.send(responseArray);
+    });
   });
 });
 
