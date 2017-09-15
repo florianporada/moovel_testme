@@ -62,7 +62,7 @@ class ProfileCard extends React.Component {
           name='globe'
           type='font-awesome'
           color={colors.primary1}
-          onPress={() => { Linking.openURL(modal.blog);}}
+          onPress={() => { Linking.openURL(modalContent.blog);}}
         />
       </View>
       <View style={styles.flexZero}>

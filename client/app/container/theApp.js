@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions/actions';
-import ApiService from '../api/ApiService';
+import ApiService from '../api/';
 import ProfileCard from '../components/ProfileCard'
 import { colors, styles } from '../config/styles'
 
@@ -45,7 +45,7 @@ class TheApp extends React.Component {
   }
 
   componentDidMount() {
-    ApiService.getUsers().then((res) => {
+    ApiService.getJavaDevelopers().then((res) => {
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
         isLoading: false,
