@@ -1,24 +1,27 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+
+import * as actions from '../actions/actions';
+import { styles } from '../config/styles';
 
 class ProfileCard extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  _setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-
   render() {
+    const { hideModal, modalContent } = this.props.actions;
+
     return (
       <View>
-       <View>
-         <Text>Hello {this.props.name}!</Text>
+       <View style={styles.profileModal}>
+         <Text>Hello {modalContent.login}!</Text>
 
          <TouchableHighlight onPress={() => {
-           this._setModalVisible(false)
+           hideModal();
          }}>
            <Text>Hide Modal</Text>
          </TouchableHighlight>
@@ -29,8 +32,24 @@ class ProfileCard extends React.Component {
 }
 
 ProfileCard.propTypes = {
-  name: PropTypes.string,
+  actions: PropTypes.object,
+  modalContent: PropTypes.object
 };
 
+function mapStateToProps(state) {
+  return {
+    modalVisible: state.modal.modalVisible,
+    modalContent: state.modal.modalContent,
+  };
+}
 
-export default ProfileCard;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileCard);

@@ -14,11 +14,26 @@ const colors = {
   greyOutline: '#cbd2d9',
 }
 
-const layout = {
+const styles = {
   container: {
     flex: 1,
     paddingTop: 22,
   },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userList: {
+    marginTop: 46,
+  },
+  navBar: {
+    backgroundColor: colors.primary,
+  },
+  profileModal: {
+    backgroundColor: colors.grey2,
+    marginTop: 50,
+  }
 }
 
-export { colors, layout }
+export { colors, styles }
