@@ -2,6 +2,7 @@
   "name": "moovel_testme",
   "displayName": "movel team",
   "expo": {
+    "name": "git gud",
     "sdkVersion": "20.0.0"
   }
 }

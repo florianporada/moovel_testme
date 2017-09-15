@@ -16,7 +16,7 @@ export default function toggle(state = initialState, action) {
       return {
         ...state,
         modalVisible: false,
-        modalContent: ''
+        modalContent: {}
       };
     default:
       return state;

@@ -19,6 +19,9 @@ const styles = {
     flex: 1,
     paddingTop: 22,
   },
+  flexZero: {
+    flex: 0
+  },
   loadingView: {
     flex: 1,
     justifyContent: 'center',
@@ -30,9 +33,22 @@ const styles = {
   navBar: {
     backgroundColor: colors.primary,
   },
-  profileModal: {
-    backgroundColor: colors.grey2,
-    marginTop: 50,
+  profileCard: {
+  },
+  badgeText: {
+    color: colors.grey5,
+  },
+  badgeContainer: {
+    backgroundColor: colors.primary1,
+    position: 'absolute',
+    left: 55,
+    top: -70
+  },
+  profileCardGeneric: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 15
   }
 }
 

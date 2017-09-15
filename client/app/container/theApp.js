@@ -1,6 +1,7 @@
 import React from 'react';
 import  { ListItem, Header } from 'react-native-elements'
-import { ActivityIndicator, View, ListView, Modal } from 'react-native';
+import { ActivityIndicator, View, ListView } from 'react-native';
+import Modal from 'react-native-simple-modal';
 import { logger } from 'react-native-logger';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,7 +17,6 @@ class TheApp extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      modalVisible: false,
     }
   }
 
@@ -26,7 +26,6 @@ class TheApp extends React.Component {
 
   _headerRight () {
     logger.log('info', 'header right');
-    // this.props.actions.showModal();
   }
 
   _headerLeft () {
@@ -78,16 +77,13 @@ class TheApp extends React.Component {
           style={styles.userList}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
-          // renderRow={(rowData) => <ListRow name={rowData.login} />}
         />
         <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.props.modalVisible}
-          onRequestClose={() => { logger.log('modal closed') }}
-          >
-          <ProfileCard />
-        </Modal>
+          open={this.props.modalVisible}
+          modalDidOpen={() => console.log('modal did open')}
+          modalDidClose={() => this.props.actions.hideModal()}>
+            <ProfileCard style={{}}/>
+          </Modal>
       </View>
     );
   }
