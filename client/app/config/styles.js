@@ -42,17 +42,12 @@ const styles = {
     color: colors.grey5,
   },
   badgeContainer: {
-    backgroundColor: colors.primary1,
-    marginTop: -10,
-  },
-  bagdeWrap: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: colors.primary1,
+    top: -75,
+    right: -5,
+    padding: 5,
+    borderRadius: 10,
   },
   profileCardGeneric: {
     flex: 0,

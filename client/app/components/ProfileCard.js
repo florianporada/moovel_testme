@@ -27,13 +27,11 @@ class ProfileCard extends React.Component {
             source={{uri: modalContent.avatar_url}}
             activeOpacity={0.7}
           />
-          <View style={styles.badgeWrap}>
-            <Badge
-              value={modalContent.followers}
-              textStyle={styles.badgeText}
-              containerStyle={styles.badgeContainer}
-            />
-          </View>
+          <Badge
+            value={helper.formatNumber(modalContent.followers)}
+            textStyle={styles.badgeText}
+            containerStyle={[styles.badgeContainer]}
+          />
         </View>
         <View style={styles.profileCardInfo}>
           <Text><Text style={styles.bold}>Username: </Text>{modalContent.login}</Text>
@@ -48,21 +46,39 @@ class ProfileCard extends React.Component {
           name='send'
           type='font-awesome'
           color={colors.primary1}
-          onPress={() => { Linking.openURL(`mailto:${modalContent.email}`);}}
+          onPress={() => {
+            if (helper.isEmpty(modalContent.email)) {
+              helper.infoAlert();
+            } else {
+              Linking.openURL(`mailto:${modalContent.email}`);
+            }
+          }}
         />
         <Icon
           raised
           name='github'
           type='font-awesome'
           color={colors.primary1}
-          onPress={() => { Linking.openURL(modalContent.html_url);}}
+          onPress={() => {
+            if (helper.isEmpty(modalContent.html_url)) {
+              helper.infoAlert();
+            } else {
+              Linking.openURL(modalContent.html_url);
+            }
+          }}
         />
         <Icon
           raised
           name='globe'
           type='font-awesome'
           color={colors.primary1}
-          onPress={() => { Linking.openURL(modalContent.blog);}}
+          onPress={() => {
+            if (helper.isEmpty(modalContent.blog)) {
+              helper.infoAlert();
+            } else {
+              Linking.openURL(modalContent.blog);
+            }
+          }}
         />
       </View>
       <View style={styles.flexZero}>
