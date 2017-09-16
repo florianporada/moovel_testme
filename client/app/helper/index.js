@@ -30,7 +30,7 @@ const Helper = {
     Alert.alert(
       'Info',
       'no information available',
-      { text: 'OK' },
+      [{ text: 'OK' }],
       { cancelable: false }
     )
   }
