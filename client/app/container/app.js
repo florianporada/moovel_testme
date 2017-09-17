@@ -1,5 +1,5 @@
 import React from 'react';
-import  { ListItem, Header } from 'react-native-elements'
+import  { ListItem, Header, Icon } from 'react-native-elements'
 import { ActivityIndicator, View, ListView, Text } from 'react-native';
 import { logger } from 'react-native-logger';
 import PropTypes from 'prop-types';
@@ -17,32 +17,65 @@ class App extends React.Component {
     this.state = {
       isLoading: true,
       hasErrored: false,
+      errorMessage: '',
     }
+  }
+
+  _apiCall() {
+    ApiService.getJavaDevelopers().then((res) => {
+      if (res.error) {
+        this.setState({
+          errorMessage: res.error.toString(),
+          isLoading: false,
+          hasErrored: true,
+        })
+      } else if (res.toString() === 'TypeError: Network request failed') {
+        this.setState({
+          errorMessage: res.toString(),
+          isLoading: false,
+          hasErrored: true,
+        });
+      } else {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+          isLoading: false,
+          hasErrored: false,
+          dataSource: ds.cloneWithRows(res),
+        });
+      }
+    });
+  }
+
+  _reload () {
+    this.setState({
+      isLoading: true,
+      hasErrored: false,
+    });
+    this._apiCall();
   }
 
   _headerRight () {
     logger.log('info', 'header right');
-    this.setState = {
-      isLoading: true,
-    }
-
-    ApiService.getJavaDevelopers().then((res) => {
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      this.setState({
-        isLoading: false,
-        dataSource: ds.cloneWithRows(res),
-      });
-    });
+    this._reload();
   }
 
   _headerLeft () {
     logger.log('info', 'header left');
-    const myProfile = {
-      login: 'test',
-      created_at: new Date().toString(),
-      followers: 1000000000000000,
-    }
-    this.props.actions.showModal(myProfile)
+    ApiService.getSingleProfile().then((res) => {
+      if (res.toString() === 'TypeError: Network request failed') {
+        this.setState({
+          isLoading: false,
+          hasErrored: true,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          hasErrored: false,
+        });
+
+        this.props.actions.showModal(res);
+      }
+    });
   }
 
   _renderRow (rowData) {
@@ -59,15 +92,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    ApiService.getJavaDevelopers().then((res) => {
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      this.setState({
-        isLoading: false,
-        dataSource: ds.cloneWithRows(res),
-      }, () => {
-        // do something with new state
-      });
-    });
+    this._apiCall();
   }
 
   render() {
@@ -82,7 +107,16 @@ class App extends React.Component {
     if (this.state.hasErrored) {
       return (
         <View style={styles.loadingView}>
-          <Text>Network Error!</Text>
+          <Text style={styles.bold}>Error!</Text>
+          <Text>{this.state.errorMessage}</Text>
+          <Icon
+            raised
+            name='cached'
+            color={colors.primary1}
+            onPress={() => {
+              this._reload();
+            }}
+            />
         </View>
       );
     }

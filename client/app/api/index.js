@@ -4,10 +4,9 @@ import setting from '../config/settings';
 
 const _errorHandler = function _errorHandler(response) {
   if (response.status >= 200 && response.status < 300) {
-    logger.log(response);
     return response.json();
   } else {
-    throw Error('statuscode is bad')
+    return JSON.parse(response._bodyText);
   }
 };
 
@@ -35,6 +34,17 @@ const ApiService = {
         return error;
       });
   },
+  getSingleProfile: function(user = 'florianporada') {
+    return fetch(`https://api.github.com/users/${user}`)
+      .then(_errorHandler)
+      .then((responseJson) => {
+        return responseJson;
+      })
+      .catch((error) => {
+        logger.log('error while fetching single profile (direct github api call)', error);
+        return error;
+      });
+  }
 };
 
 export default ApiService;

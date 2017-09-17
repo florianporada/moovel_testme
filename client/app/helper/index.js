@@ -18,6 +18,10 @@ const Helper = {
       return true;
     }
 
+    if (value.length <= 0) {
+      return true;
+    }
+
     return false;
   },
   infoAlert: function() {
