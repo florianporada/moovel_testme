@@ -18,7 +18,7 @@ const getUserInfo = function getUserInfo(user) {
     const options = {
       url: `${config.GITHUB_API}/users/${user.login}`,
       headers: {
-        'User-Agent': 'request',
+        'User-Agent': 'Mozilla/5.0',
       },
     };
 

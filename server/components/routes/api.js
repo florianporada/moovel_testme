@@ -6,6 +6,12 @@ const router = express.Router();
 const config = require('../../config');
 const { getUserInfo, compareUsernames } = require('../helper');
 
+const reqOptions = {
+  headers: {
+    'User-Agent': 'Mozilla/5.0',
+  },
+};
+
 // TODO: add authentication for more api calls
 
 // middleware that is specific to this router
@@ -28,14 +34,9 @@ router.get('/', (req, res) => {
 
 // get rate limit infos from github api
 router.get('/github/rate_limit/', (req, res) => {
-  const options = {
-    url: `${config.GITHUB_API}/rate_limit`,
-    headers: {
-      'User-Agent': 'request',
-    },
-  };
+  reqOptions.url = `${config.GITHUB_API}/rate_limit`;
 
-  request(options, (err, response, body) => {
+  request(reqOptions, (err, response, body) => {
     if (err) {
       winston.log('error', 'Error while fetching rate limits', err);
       res.status(500).send('Error while fetching rate limits');
@@ -50,14 +51,9 @@ router.get('/github/rate_limit/', (req, res) => {
 
 // get moovel memebers from github api
 router.get('/github/users/moovel/', (req, res) => {
-  const options = {
-    url: `${config.GITHUB_API}/orgs/moovel/members`,
-    headers: {
-      'User-Agent': 'request',
-    },
-  };
+  reqOptions.url = `${config.GITHUB_API}/orgs/moovel/members`;
 
-  request(options, (err0, response, body) => {
+  request(reqOptions, (err0, response, body) => {
     if (err0) {
       winston.log('error', 'Error while fetching moovel members', err0);
       res.status(500).send({ error: 'Error while fetching moovel members' });
@@ -98,14 +94,9 @@ router.get('/github/users/moovel/', (req, res) => {
 // get java coders from github api
 router.get('/github/users/java/', (req, res) => {
   const limit = (req.query.limit) ? req.query.limit : 10;
-  const options = {
-    url: `${config.GITHUB_API}/search/users?q=language%3Ajavascript&type=Users&sort=login&order=asc`,
-    headers: {
-      'User-Agent': 'request',
-    },
-  };
+  reqOptions.url = `${config.GITHUB_API}/search/users?q=language%3Ajavascript&type=Users&sort=login&order=asc`;
 
-  request(options, (err0, response, body) => {
+  request(reqOptions, (err0, response, body) => {
     if (err0) {
       winston.log('error', 'Error while fetching the java developers', err0);
       res.status(500).send({ error: 'Error while fetching the java developers' });
