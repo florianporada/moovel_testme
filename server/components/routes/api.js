@@ -62,8 +62,15 @@ router.get('/github/users/moovel/', (req, res) => {
     }
 
     // contruct object to match the getUserInfo functions criteria
-    const items = JSON.parse(body);
-    const parsedBody = { items };
+    // either response is the desired array or a object with an error message
+    // if it isn't an array create one.
+    let parsedBody = JSON.parse(body);
+    if (!Array.isArray(parsedBody)) {
+      parsedBody = { items: [parsedBody] };
+    } else {
+      parsedBody = { items: parsedBody };
+    }
+
     const promiseArray = [];
 
     // iterating through response to get user details from every user
