@@ -47,6 +47,7 @@ ProfileModal.propTypes = {
   modalContent: PropTypes.object
 };
 
+// redux state to props mapper
 function mapStateToProps(state) {
   return {
     modalVisible: state.modal.modalVisible,
@@ -54,6 +55,7 @@ function mapStateToProps(state) {
   };
 }
 
+// redux dispatch to props mapper
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions, dispatch)

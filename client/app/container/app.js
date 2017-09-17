@@ -21,6 +21,7 @@ class App extends React.Component {
     }
   }
 
+  // get data from api service and set state according to response / error
   _apiCall() {
     ApiService.getJavaDevelopers().then((res) => {
       if (res.error) {
@@ -46,6 +47,7 @@ class App extends React.Component {
     });
   }
 
+  // rerun the apicall and get fresh data
   _reload () {
     this.setState({
       isLoading: true,
@@ -54,13 +56,17 @@ class App extends React.Component {
     this._apiCall();
   }
 
+  // function for right header button
   _headerRight () {
     logger.log('info', 'header right');
     this._reload();
   }
 
+  // function for left header button
   _headerLeft () {
     logger.log('info', 'header left');
+
+    // get single profile (mine by default)
     ApiService.getSingleProfile().then((res) => {
       if (res.error) {
         this.setState({
@@ -85,6 +91,7 @@ class App extends React.Component {
     });
   }
 
+  // render single row (react-native-elements ListItem)
   _renderRow (rowData) {
     return (
       <ListItem
@@ -98,6 +105,7 @@ class App extends React.Component {
     );
   }
 
+  // trigger api call after component did mount
   componentDidMount() {
     this._apiCall();
   }
@@ -114,8 +122,8 @@ class App extends React.Component {
     if (this.state.hasErrored) {
       return (
         <View style={styles.loadingView}>
-          <Text style={styles.bold}>Error!</Text>
-          <Text>{this.state.errorMessage}</Text>
+          <Text style={[styles.bold, styles.center]}>Error!</Text>
+          <Text style={styles.center}>{this.state.errorMessage}</Text>
           <Icon
             raised
             name='cached'
@@ -153,6 +161,7 @@ App.propTypes = {
   actions: PropTypes.object
 };
 
+// redux state to props mapper
 function mapStateToProps(state) {
   return {
     modalVisible: state.modal.modalVisible,
@@ -160,6 +169,7 @@ function mapStateToProps(state) {
   };
 }
 
+// redux dispatch to props mapper
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions, dispatch)
