@@ -14,17 +14,7 @@ const Helper = {
       return true
     }
 
-    if (value === undefined) {
-      return true
-    }
-
-    if (value.length === 0) {
-      return true
-    }
-
-    if (value === undefined) {
-      return true
-    }
+    return false;
   },
   infoAlert: function() {
     Alert.alert(

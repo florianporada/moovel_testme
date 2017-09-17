@@ -7,8 +7,6 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import TheApp from './container/app';
 
-// const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-// const store = createStoreWithMiddleware(reducers);
 const store = createStore(reducers, applyMiddleware(thunk))
 
 export default class App extends Component {
