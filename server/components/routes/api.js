@@ -6,6 +6,8 @@ const router = express.Router();
 const config = require('../../config');
 const { getUserInfo, compareUsernames } = require('../helper');
 
+// TODO: add authentication for more api calls
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
   winston.log('info', '%s %s %s', req.method, req.url, req.path);

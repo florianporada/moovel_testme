@@ -14,6 +14,7 @@ const getUserInfo = function getUserInfo(user) {
       reject(new Error('no username provided. { login: "foo" } is missing'));
     }
 
+    // TODO: add authentication for more api calls
     const options = {
       url: `${config.GITHUB_API}/users/${user.login}`,
       headers: {
@@ -38,6 +39,7 @@ const getUserInfo = function getUserInfo(user) {
   });
 };
 
+// sorts usernames alphabetical. { login. 'foo' } must be provided
 const compareUsernames = function compareUsernames(a, b) {
   const nameA = a.login.toUpperCase(); // ignore upper and lowercase
   const nameB = b.login.toUpperCase(); // ignore upper and lowercase
@@ -55,5 +57,5 @@ const compareUsernames = function compareUsernames(a, b) {
 
 module.exports = {
   getUserInfo,
-  compareUsernames
+  compareUsernames,
 };
