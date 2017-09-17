@@ -11,7 +11,11 @@ const Helper = {
   },
   isEmpty: function(value) {
     if (value === null) {
-      return true
+      return true;
+    }
+
+    if (value === undefined) {
+      return true;
     }
 
     return false;

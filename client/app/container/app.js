@@ -1,6 +1,6 @@
 import React from 'react';
 import  { ListItem, Header } from 'react-native-elements'
-import { ActivityIndicator, View, ListView } from 'react-native';
+import { ActivityIndicator, View, ListView, Text } from 'react-native';
 import { logger } from 'react-native-logger';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,19 +16,33 @@ class App extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
+      hasErrored: false,
     }
-  }
-
-  _onPress (data) {
-    this.props.actions.showModal(data);
   }
 
   _headerRight () {
     logger.log('info', 'header right');
+    this.setState = {
+      isLoading: true,
+    }
+
+    ApiService.getJavaDevelopers().then((res) => {
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      this.setState({
+        isLoading: false,
+        dataSource: ds.cloneWithRows(res),
+      });
+    });
   }
 
   _headerLeft () {
     logger.log('info', 'header left');
+    const myProfile = {
+      login: 'test',
+      created_at: new Date().toString(),
+      followers: 1000000000000000,
+    }
+    this.props.actions.showModal(myProfile)
   }
 
   _renderRow (rowData) {
@@ -36,7 +50,7 @@ class App extends React.Component {
       <ListItem
         roundAvatar
         hideChevron
-        onPress={() => { this._onPress(rowData) }}
+        onPress={() => { this.props.actions.showModal(rowData); }}
         title={rowData.name}
         subtitle={rowData.login}
         avatar={{uri:rowData.avatar_url}}
@@ -65,12 +79,20 @@ class App extends React.Component {
       );
     }
 
+    if (this.state.hasErrored) {
+      return (
+        <View style={styles.loadingView}>
+          <Text>Network Error!</Text>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <Header
-          leftComponent={{ icon: 'menu', color:  colors.grey5, onPress: () => {} }}
+          leftComponent={{ icon: 'account-circle', color:  colors.grey5, onPress: () => { this._headerLeft(); } }}
           centerComponent={{ text: 'hi', style: { color: colors.grey5 } }}
-          rightComponent={{ icon: 'info-outline', color: colors.grey5, onPress: () => { this._headerRight() } }}
+          rightComponent={{ icon: 'cached', color: colors.grey5, onPress: () => { this._headerRight(); } }}
           outerContainerStyles={ styles.navBar }
         />
         <ListView
