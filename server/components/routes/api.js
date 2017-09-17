@@ -37,6 +37,8 @@ router.get('/github/rate_limit/', (req, res) => {
     if (err) {
       winston.log('error', 'Error while fetching rate limits', err);
       res.status(500).send('Error while fetching rate limits');
+
+      return;
     }
 
     res.set('Content-Type', 'application/json');
