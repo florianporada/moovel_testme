@@ -28,7 +28,7 @@ class App extends React.Component {
           errorMessage: res.error.toString(),
           isLoading: false,
           hasErrored: true,
-        })
+        });
       } else if (res.toString() === 'TypeError: Network request failed') {
         this.setState({
           errorMessage: res.toString(),
@@ -62,8 +62,15 @@ class App extends React.Component {
   _headerLeft () {
     logger.log('info', 'header left');
     ApiService.getSingleProfile().then((res) => {
-      if (res.toString() === 'TypeError: Network request failed') {
+      if (res.error) {
         this.setState({
+          errorMessage: res.error.toString(),
+          isLoading: false,
+          hasErrored: true,
+        });
+      } else if (res.toString() === 'TypeError: Network request failed') {
+        this.setState({
+          errorMessage: res.toString(),
           isLoading: false,
           hasErrored: true,
         });

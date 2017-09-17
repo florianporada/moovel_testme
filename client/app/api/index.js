@@ -13,7 +13,7 @@ const _errorHandler = function _errorHandler(response) {
 const ApiService = {
   getMoovelMembers: function() {
     return fetch(`${setting.API_ENDPOINT}github/users/moovel`)
-      .then((response) => response.json())
+    .then(_errorHandler)
       .then((responseJson) => {
         logger.log(responseJson);
         return responseJson;
