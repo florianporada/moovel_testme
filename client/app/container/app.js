@@ -1,7 +1,6 @@
 import React from 'react';
 import  { ListItem, Header } from 'react-native-elements'
 import { ActivityIndicator, View, ListView } from 'react-native';
-import Modal from 'react-native-simple-modal';
 import { logger } from 'react-native-logger';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,10 +8,10 @@ import { bindActionCreators } from 'redux';
 
 import * as actions from '../actions';
 import ApiService from '../api';
-import ProfileCard from '../components/ProfileCard'
+import ProfileModal from './profileModal'
 import { colors, styles } from '../config/styles'
 
-class TheApp extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,18 +78,13 @@ class TheApp extends React.Component {
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
         />
-        <Modal
-          open={this.props.modalVisible}
-          modalDidOpen={() => logger.log('modal did open')}
-          modalDidClose={() => this.props.actions.hideModal()}>
-            <ProfileCard />
-          </Modal>
+        <ProfileModal />
       </View>
     );
   }
 }
 
-TheApp.propTypes = {
+App.propTypes = {
   name: PropTypes.string,
   modalVisible: PropTypes.bool,
   actions: PropTypes.object
@@ -112,4 +106,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TheApp);
+)(App);
