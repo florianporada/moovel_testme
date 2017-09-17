@@ -4,7 +4,7 @@ const request = require('request');
 
 const router = express.Router();
 const config = require('../../config');
-const { getUserInfo } = require('../helper');
+const { getUserInfo, compareUsernames } = require('../helper');
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -53,14 +53,34 @@ router.get('/github/users/moovel/', (req, res) => {
     },
   };
 
-  request(options, (err, response, body) => {
-    if (err) {
-      winston.log('error', 'Error while fetching moovel members', err);
-      res.status(500).send('Error while fetching moovel members');
+  request(options, (err0, response, body) => {
+    if (err0) {
+      winston.log('error', 'Error while fetching moovel members', err0);
+      res.status(500).send({ error: 'Error while fetching moovel members' });
+
+      return;
     }
 
-    res.set('Content-Type', 'application/json');
-    res.send(body);
+    // contruct object to match the getUserInfo functions criteria
+    const items = JSON.parse(body);
+    const parsedBody = { items };
+    const promiseArray = [];
+
+    // iterating through response to get user details from every user
+    for (let i = 0; i < parsedBody.items.length; i += 1) {
+      promiseArray.push(getUserInfo(parsedBody.items[i]));
+    }
+
+    // combining all promises and wait for resolve/reject before sending the response
+    Promise.all(promiseArray).then((responseArray) => {
+      // sort by login name
+      responseArray.sort(compareUsernames);
+      res.set('Content-Type', 'application/json');
+      res.send(responseArray);
+    }, (err1) => {
+      winston.log('error', 'Error while fetching the user details', err1);
+      res.status(500).send({ error: `Error while fetching the user details. ${err1}` });
+    });
   });
 });
 
@@ -77,23 +97,32 @@ router.get('/github/users/java/', (req, res) => {
   request(options, (err0, response, body) => {
     if (err0) {
       winston.log('error', 'Error while fetching the java developers', err0);
-      res.status(500).send('Error while fetching the java developers');
+      res.status(500).send({ error: 'Error while fetching the java developers' });
+
+      return;
     }
 
+    // TODO: remove duplicate code block see api endpoint above.
+
+    // contruct object to match the getUserInfo functions criteria
     const parsedBody = JSON.parse(body);
     const items = parsedBody.items.slice(0, limit);
     const promiseArray = [];
 
+    // iterating through response to get user details from every user
     for (let i = 0; i < items.length; i += 1) {
       promiseArray.push(getUserInfo(items[i]));
     }
 
+    // combining all promises and wait for resolve/reject before sending the response
     Promise.all(promiseArray).then((responseArray) => {
+      // sort by login name
+      responseArray.sort(compareUsernames);
       res.set('Content-Type', 'application/json');
       res.send(responseArray);
     }, (err1) => {
       winston.log('error', 'Error while fetching the user details', err1);
-      res.status(500).send('Error while fetching the user details');
+      res.status(500).send({ error: `Error while fetching the user details. ${err1}` });
     });
   });
 });
