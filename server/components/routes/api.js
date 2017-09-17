@@ -6,6 +6,8 @@ const router = express.Router();
 const config = require('../../config');
 const { getUserInfo, compareUsernames } = require('../helper');
 
+// TODO: add authentication for more api calls
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
   winston.log('info', '%s %s %s', req.method, req.url, req.path);
@@ -37,6 +39,8 @@ router.get('/github/rate_limit/', (req, res) => {
     if (err) {
       winston.log('error', 'Error while fetching rate limits', err);
       res.status(500).send('Error while fetching rate limits');
+
+      return;
     }
 
     res.set('Content-Type', 'application/json');
