@@ -1,3 +1,5 @@
+// centralized stylefile
+// TODO: not sure if centralized stylefile is the best approach...
 const colors = {
   primary: '#00b7bf',
   primary1: '#4d86f7',
@@ -20,10 +22,13 @@ const styles = {
     paddingTop: 22,
   },
   flexZero: {
-    flex: 0
+    flex: 0,
   },
   bold: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+  },
+  center: {
+    textAlign: 'center',
   },
   loadingView: {
     flex: 1,
