@@ -1,6 +1,9 @@
 const express = require('express');
 const winston = require('winston');
 const request = require('request');
+const base64 = require('base-64');
+const utf8 = require('utf8');
+
 
 const router = express.Router();
 const config = require('../../config');
@@ -12,7 +15,11 @@ const reqOptions = {
   },
 };
 
-// TODO: add authentication for more api calls
+// check credentials and add them for authorization to the header
+if (config.GITHUB_USERNAME) {
+  const encoded = base64.encode(utf8.encode(`${config.GITHUB_USERNAME}:${config.GITHUB_PASSWORD}`));
+  reqOptions.headers.Authorization = `Basic ${encoded}`;
+}
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -104,7 +111,7 @@ router.get('/github/users/java/', (req, res) => {
       return;
     }
 
-    // TODO: remove duplicate code block see api endpoint above.
+    // TODO: remove duplicate code block. see api endpoint gihtub/users/moovel.
 
     // contruct object to match the getUserInfo functions criteria
     const parsedBody = JSON.parse(body);

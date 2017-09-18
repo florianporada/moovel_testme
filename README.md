@@ -6,10 +6,11 @@ hi *moovel*.
 
 By using `npm install && npm start` the backend service will be started.
 
-Alternatively you can use `docker build .` to make the whole thing into a docker container.
+Alternatively you can use `docker build .` to create a docker container and run it.
+
+Rename `config.sample.js` to `config.js` and fill in your credentials from GitHub. Otherwise you are limited to 60 api calls.
 
 With `http://localhost:8080/api/` you can get an overview over the api endpoints.
-Due to limited calls to GitHub API, you have to wait a hour after 60 calls (without authentication //TODO).
 The developed API makes by default 10 calls to the GitHub API to fetch the details for each user individually.
 The standard GitHub API call (e.g. `https://api.github.com/search/users?q=tom+repos:%3E42+followers:%3E1000`) doesn't give you properties like `created_at`, `email` or `blog`.
 

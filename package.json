@@ -30,9 +30,11 @@
   },
   "homepage": "https://github.com/florianporada/moovel_testme#readme",
   "dependencies": {
+    "base-64": "^0.1.0",
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
     "request": "^2.81.0",
+    "utf8": "^2.1.2",
     "winston": "^2.3.1"
   }
 }

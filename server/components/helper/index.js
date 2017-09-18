@@ -1,4 +1,6 @@
 const request = require('request');
+const base64 = require('base-64');
+const utf8 = require('utf8');
 
 const config = require('../../config');
 
@@ -14,13 +16,18 @@ const getUserInfo = function getUserInfo(user) {
       reject(new Error('no username provided. { login: "foo" } is missing'));
     }
 
-    // TODO: add authentication for more api calls
     const options = {
       url: `${config.GITHUB_API}/users/${user.login}`,
       headers: {
         'User-Agent': 'Mozilla/5.0',
       },
     };
+
+    // check credentials and add them for authorization to the header
+    if (config.GITHUB_USERNAME) {
+      const encoded = base64.encode(utf8.encode(`${config.GITHUB_USERNAME}:${config.GITHUB_PASSWORD}`));
+      options.headers.Authorization = `Basic ${encoded}`;
+    }
 
     request(options, (err, response, body) => {
       if (err) {
