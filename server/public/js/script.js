@@ -18,4 +18,5 @@ window.onload = function () {
   document.getElementById('b2').onclick = function onclick() { callApi('/api/github/rate_limit'); };
   document.getElementById('b3').onclick = function onclick() { callApi('/api/github/users/java'); };
   document.getElementById('b4').onclick = function onclick() { callApi('/api/github/users/moovel'); };
+  document.getElementById('b5').onclick = function onclick() { callApi('/api/github/users/single/florianporada'); };
 };

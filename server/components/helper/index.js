@@ -1,49 +1,6 @@
-const request = require('request');
-const base64 = require('base-64');
-const utf8 = require('utf8');
-
-const config = require('../../config');
-
 // check if res body contains the message
 const isExceeded = function isExceeded(res) {
   return res.message && res.message.includes('API rate limit exceeded');
-};
-
-// get detailed information about the user because github API doesn't provide all infos at once.
-const getUserInfo = function getUserInfo(user) {
-  return new Promise((resolve, reject) => {
-    if (!user.login) {
-      reject(new Error('no username provided. { login: "foo" } is missing'));
-    }
-
-    const options = {
-      url: `${config.GITHUB_API}/users/${user.login}`,
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-      },
-    };
-
-    // check credentials and add them for authorization to the header
-    if (config.GITHUB_USERNAME) {
-      const encoded = base64.encode(utf8.encode(`${config.GITHUB_USERNAME}:${config.GITHUB_PASSWORD}`));
-      options.headers.Authorization = `Basic ${encoded}`;
-    }
-
-    request(options, (err, response, body) => {
-      if (err) {
-        reject(new Error('error while getting user details', err));
-      }
-
-      const parsedBody = JSON.parse(body);
-
-      // check if rate limit is exceeded and handle error if so
-      if (isExceeded(parsedBody)) {
-        reject(new Error('rate limit exceeded'));
-      }
-
-      resolve(parsedBody);
-    });
-  });
 };
 
 // sorts usernames alphabetical. { login. 'foo' } must be provided
@@ -63,6 +20,6 @@ const compareUsernames = function compareUsernames(a, b) {
 
 
 module.exports = {
-  getUserInfo,
   compareUsernames,
+  isExceeded,
 };
