@@ -36,15 +36,15 @@ const ApiService = {
         return error;
       });
   },
-  // get single profile directly from the official github api. default user is florianporada
+  // get single user from own github api.
   getSingleProfile: function(user = 'florianporada') {
-    return fetch(`https://api.github.com/users/${user}`)
+    return fetch(`${setting.API_ENDPOINT}github/users/single/florianporada`)
       .then(_errorHandler)
       .then((responseJson) => {
         return responseJson;
       })
       .catch((error) => {
-        logger.log('error while fetching single profile (direct github api call)', error);
+        logger.log('error while fetching single profile', error);
         return error;
       });
   }
