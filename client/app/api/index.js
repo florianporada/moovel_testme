@@ -38,7 +38,7 @@ const ApiService = {
   },
   // get single user from own github api.
   getSingleProfile: function(user = 'florianporada') {
-    return fetch(`${setting.API_ENDPOINT}github/users/single/florianporada`)
+    return fetch(`${setting.API_ENDPOINT}github/users/single/${user}`)
       .then(_errorHandler)
       .then((responseJson) => {
         return responseJson;
