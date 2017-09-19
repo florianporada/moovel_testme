@@ -7,7 +7,7 @@ const utf8 = require('utf8');
 
 const router = express.Router();
 const config = require('../../config');
-const { getUserInfo, compareUsernames } = require('../helper');
+const { compareUsernames, isExceeded } = require('../helper');
 
 const reqOptions = {
   headers: {
@@ -21,6 +21,32 @@ if (config.GITHUB_USERNAME) {
   reqOptions.headers.Authorization = `Basic ${encoded}`;
 }
 
+// get detailed information about the user because github API doesn't provide all infos at once.
+const getUserDetails = function getUserDetails(username) {
+  return new Promise((resolve, reject) => {
+    if (!username) {
+      reject(new Error('no username provided.'));
+    }
+
+    reqOptions.url = `${config.GITHUB_API}/users/${username}`;
+
+    request(reqOptions, (err, response, body) => {
+      if (err) {
+        reject(new Error('error while getting user details', err));
+      }
+
+      const parsedBody = JSON.parse(body);
+
+      // check if rate limit is exceeded and handle error if so
+      if (isExceeded(parsedBody)) {
+        reject(new Error('rate limit exceeded'));
+      }
+
+      resolve(parsedBody);
+    });
+  });
+};
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
   winston.log('info', '%s %s %s', req.method, req.url, req.path);
@@ -33,6 +59,7 @@ router.get('/', (req, res) => {
     welcome: 'welcome to the wonderland',
     usage: [
       { '/': 'entrypoint' },
+      { '/github/users/single/:username': 'GET. gives you back a single user by username' },
       { '/github/users/moovel/': 'GET. gives you back members from moovel org' },
       { '/github/users/java/': 'GET. gives you back java coders ordered by username. You can limit the amount with eg. "?limit=10"' },
     ],
@@ -55,6 +82,25 @@ router.get('/github/rate_limit/', (req, res) => {
     res.send(body);
   });
 });
+
+// get single profile form github api
+router.get('/github/users/single/:username', (req, res) => {
+  if (!req.params.username) {
+    winston.log('error', 'Error while fetching getting single user', 'no username fount in request parameter');
+    res.status(500).send({ error: 'Error while fetching getting single user. no username fount in request parameter' });
+
+    return;
+  }
+
+  getUserDetails(req.params.username).then((data) => {
+    res.set('Content-Type', 'application/json');
+    res.send(data);
+  }, (err) => {
+    winston.log('error', 'Error while fetching rate limits', err);
+    res.status(500).send('Error while fetching rate limits');
+  });
+});
+
 
 // get moovel memebers from github api
 router.get('/github/users/moovel/', (req, res) => {
@@ -82,7 +128,8 @@ router.get('/github/users/moovel/', (req, res) => {
 
     // iterating through response to get user details from every user
     for (let i = 0; i < parsedBody.items.length; i += 1) {
-      promiseArray.push(getUserInfo(parsedBody.items[i]));
+      const userDetails = getUserDetails(parsedBody.items[i].login);
+      promiseArray.push(userDetails);
     }
 
     // combining all promises and wait for resolve/reject before sending the response
@@ -120,7 +167,8 @@ router.get('/github/users/java/', (req, res) => {
 
     // iterating through response to get user details from every user
     for (let i = 0; i < items.length; i += 1) {
-      promiseArray.push(getUserInfo(items[i]));
+      const userDetails = getUserDetails(parsedBody.items[i].login);
+      promiseArray.push(userDetails);
     }
 
     // combining all promises and wait for resolve/reject before sending the response
