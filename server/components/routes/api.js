@@ -94,7 +94,7 @@ router.get('/github/users/single/:username', (req, res) => {
 
   getUserDetails(req.params.username).then((data) => {
     res.set('Content-Type', 'application/json');
-    res.send(data);
+    res.send(JSON.stringify(data));
   }, (err) => {
     winston.log('error', 'Error while fetching rate limits', err);
     res.status(500).send('Error while fetching rate limits');
